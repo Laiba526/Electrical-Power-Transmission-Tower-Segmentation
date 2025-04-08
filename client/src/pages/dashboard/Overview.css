@@ -1,0 +1,15 @@
+
+.about {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .about h1 {
+    text-align: center;
+  }
+  
+  .about p {
+    line-height: 1.6;
+  }
+  

@@ -1,0 +1,23 @@
+.edit-profile-link {
+  font-size: 1rem;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #343851;
+  border: none;
+  width: fit-content;
+  transition: background-color 0.3s ease;
+}
+
+.edit-profile-link i {
+  margin-right: 5px;
+}
+
+.edit-profile-link:hover {
+  background-color: #fad0c4;
+  cursor: pointer;
+  color: black;
+}
