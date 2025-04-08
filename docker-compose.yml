@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb+srv://mern_user:laiba526@estate.cjith.mongodb.net/Estate?retryWrites=true&w=majority&appName=Estate
