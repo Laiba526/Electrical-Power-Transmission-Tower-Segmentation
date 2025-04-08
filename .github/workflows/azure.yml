@@ -1,0 +1,19 @@
+name: Azure CI/CD Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t segmentation-app .
+      
+      - name: Deploy to Azure (Optional)
+        run: echo "Azure App will pull latest image from GitHub"
