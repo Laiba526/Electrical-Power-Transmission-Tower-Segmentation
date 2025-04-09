@@ -10,32 +10,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
-      - name: Checkout code
-        uses: actions/checkout@v4  # ✅ Use the latest version
+    # Step 1: Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      # Step 2: Set up Azure CLI (✅ fix the action casing and version)
-      - name: Set up Azure CLI
-        uses: Azure/setup-azure-cli@v1
-        with:
-          azure-cli-version: '2.0.81'
+    # Step 2: Set up Azure CLI
+    - name: Set up Azure CLI
+      uses: azure/setup-azure-cli@v1
 
-      # Step 3: Log in to Azure using the Service Principal
-      - name: Login to Azure
-        run: |
-          az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+    # Step 3: Log in to Azure
+    - name: Login to Azure
+      run: |
+        az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
 
-      # Step 4: Set the Azure subscription
-      - name: Set Azure subscription
-        run: |
-          az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    # Step 4: Set subscription
+    - name: Set Azure subscription
+      run: |
+        az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # Step 5: Deploy to Azure Web App
-      - name: Deploy to Azure Web App
-        run: |
-          az webapp up \
-            --name ${{ secrets.AZURE_WEB_APP_NAME }} \
-            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-            --sku B1 \
-            --runtime "NODE|14-lts" \
-            --plan ${{ secrets.AZURE_APP_SERVICE_PLAN }}
+    # Step 5: Install frontend dependencies and build
+    - name: Install and build frontend
+      working-directory: ./client
+      run: |
+        npm install
+        npm run build
+
+    # Step 6: Deploy backend (Node.js + Express) with az webapp up
+    - name: Deploy backend to Azure Web App
+      working-directory: ./server
+      run: |
+        az webapp up --name ${{ secrets.AZURE_WEB_APP_NAME }} \
+                     --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+                     --sku B1 \
+                     --runtime "NODE|14-lts" \
+                     --plan ${{ secrets.AZURE_APP_SERVICE_PLAN }}
